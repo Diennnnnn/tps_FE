@@ -4,40 +4,78 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import { GetServerSideProps } from "next";
+import { SearchPhone } from "@/service/userService";
 
 interface codeProductProps{
   phoneNumber: string | null;
 }
 
   const lichsu = ({phoneNumber} : codeProductProps) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [sdt1, setSdt] = useState("");
+    interface History {
+      id: number;
+      username: string;
+      password: string;
+      ngay: Date;
+      hovaten: string;
+      name_bacsi: any;
+      chandoan: string;
+      donthuoc: string;
+      ketquaCLS: string;
+    }
+  
+    //   const [sdt1, setSdt] = useState("");
     //console.log("sdt1", phoneNumber)
-
-    let temp =phoneNumber?.split("+84");
-    let sdt = "0"+temp[1]
+  
+    // let phoneNumber = "+84366655650";
+    let temp = phoneNumber?.split("+84");
+    let sdt = "0" + temp[1];
     // console.log("sdt_temp", "0"+temp[1]/)
-    console.log("sdt", sdt)
-
+    console.log("sdt", sdt);
+  
+    const [temp1, setTemp1] = useState("");
+  
+    const [ngayfrm, setNgayfrm] = useState(new Date())
+  
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [userData, setUserData] = useState([]);
+    const [userData, setUserData] = useState<History[]>([]);
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    let ngayy: string;
+    let time: string;
+    let ngaygio: string;
+    const handleFormatDateTime = async (date: Date) => {
+      console.log("asda",date)
+      const day = new Date(date).getDate();
+      const month = new Date(date).getMonth()+1;
+      const year = new Date(date).getFullYear();
+      const hours = new Date(date).getHours();
+      const minute= new Date(date).getMinutes();
+      const second = new Date(date).getSeconds();
+      // const day = new Date(date).getDate();
+      ngayy = day + "/"+ month+ "/"+ year
+      time = hours+ ":"+ minute+ ":"+ second
+      ngaygio= ngayy +" "+time
+       console.log("day", day)
+       console.log("month", month)
+       console.log("year", year)
+       console.log("hours", hours)
+       console.log("minute", minute)
+       console.log("second", second)
+       console.log("ngayy", ngayy)
+      //  console.log("ngay1", ngay1)
+    };
+      // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-       async function SearchPhone(params: { sdt: string }): Promise<any> {
-        const { sdt } = params;
-        const response = await fetch(
-          // `http://localhost:8080/clinics/search?keyword=${key}`
-          `http://localhost:8080/api/get-history?SDT=${sdt}`
-      
-        );
-        const data = await response.json();
-        setUserData(data)
-        console.log(" checkz",userData);
-        console.log(" checkz",data);
-
-        return data;
-      }
-    }, [userData]);
+      const getUserdata = async () => {
+        const params = {
+          key: sdt,
+        };
+        const reqData = await SearchPhone(params);
+        const res: History[] = reqData.historys;
+        setUserData(res);
+  
+      };
+      getUserdata();
+    }, []);
 
   return (
     <main>
@@ -65,8 +103,14 @@ interface codeProductProps{
               {userData.map((item) => (
                 // setDate(item.ngay),
                 <>
-                  <tr key={item.id}> 
-                    <td className="border border-slate-300">{item.ngay}</td>
+                  <tr  key={item.id}>
+                      <td className="border border-slate-300 justify-center   break-normal"{...handleFormatDateTime(item.ngay)}                    >
+                        {time}
+                          {/* <br></br> */}
+                          <td className=" flex justify-center ">{ngayy}</td>
+                      </td>
+
+
                     <td className="border border-slate-300">{item.hovaten}</td>
                     <td className="border border-slate-300">{item.name_bacsi}</td>
                     <td className="border border-slate-300">{item.chandoan}</td>

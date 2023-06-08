@@ -31,31 +31,35 @@ const lichsu = () => {
   // console.log("sdt_temp", "0"+temp[1]/)
   console.log("sdt", sdt);
 
-  const [ngay1, setNgay1] = useState(new Date());
+  const [temp1, setTemp1] = useState("");
 
   const [ngayfrm, setNgayfrm] = useState(new Date())
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [userData, setUserData] = useState<History[]>([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-
-  // const handleFormatDateTime = (ngayyy: Date) => {
-  //   console.log("asda",ngayyy)
-  //   setNgayfrm(
-  //     ngayyy.getDate() +
-  //       "/" +
-  //       (ngayyy.getMonth() + 1) +
-  //       "/" +
-  //       ngayyy.getFullYear() +
-  //       " " +
-  //       ngayyy.getHours() +
-  //       ":" +
-  //       ngayyy.getMinutes() +
-  //       ":" +
-  //       ngayyy.getSeconds()
-  //   );
-  //   return ngayfrm;
-  // };
+  let ngayy: string;
+  let time: string
+  const handleFormatDateTime = async (date: Date) => {
+    console.log("asda",date)
+    const day = new Date(date).getDate();
+    const month = new Date(date).getMonth()+1;
+    const year = new Date(date).getFullYear();
+    const hours = new Date(date).getHours();
+    const minute= new Date(date).getMinutes();
+    const second = new Date(date).getSeconds();
+    // const day = new Date(date).getDate();
+     ngayy = day + "/"+ month+ "/"+ year
+    time = hours+ ":"+ minute+ ":"+ second
+     console.log("day", day)
+     console.log("month", month)
+     console.log("year", year)
+     console.log("hours", hours)
+     console.log("minute", minute)
+     console.log("second", second)
+     console.log("ngayy", ngayy)
+    //  console.log("ngay1", ngay1)
+  };
     // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const getUserdata = async () => {
@@ -65,39 +69,7 @@ const lichsu = () => {
       const reqData = await SearchPhone(params);
       const res: History[] = reqData.historys;
       setUserData(res);
-      res.map((res) => (
-        setNgayfrm(res.ngay),
-          console.log("ngayy", res.ngay),
-          setNgay1(res.ngay),
-          console.log("ngayyyy", ngayfrm)
-          // setNgayfrm(
-          //       res.ngay.getDate() +
-          //         "/" +
-          //         (res.ngay.getMonth() + 1) +
-          //         "/" +
-          //         res.ngay.getFullYear() +
-          //         " " +
-          //         res.ngay.getHours() +
-          //         ":" +
-          //         res.ngay.getMinutes() +
-          //         ":" +
-          //         res.ngay.getSeconds()
-          //     )
 
-
-      )
-      );
-      // let temp
-      // res.map(
-      //   (res) => (
-      //     setNgay1(res.ngay), console.log("ngay1", ngay1)
-      //     // setNgayfrm(ngay.getDate()+"/"+(ngay.getMonth()+1)+"/"+ngay.getFullYear()+" "+ngay.getHours()+":"+ngay.getMinutes()+":"+ngay.getSeconds())
-      //     // setNgay(temp)
-      //   )
-      // );
-      // console.log(" check1", res);
-      // console.log(" check2", userData);
-      // console.log("ngay", temp)
     };
     getUserdata();
   }, []);
@@ -130,8 +102,11 @@ const lichsu = () => {
                 // setNgayfrm(ngay.getDate()+"/"+(ngay.getMonth()+1)+"/"+ngay.getFullYear()+" "+ngay.getHours()+":"+ngay.getMinutes()+":"+ngay.getSeconds()),
                 <>
                   <tr key={item.id}>
-                    <td className="border border-slate-300">
-                      {item.ngay}
+                    <td className="border border-slate-300" 
+                    {...handleFormatDateTime(item.ngay)}
+                    // onChange={(ngay: Date) => handleFormatDateTime((item.ngay))}
+                    >
+                     {ngayy , time}
                       {/* {handleFormatDateTime(item.ngay)} */}
                     </td>
                     <td className="border border-slate-300">{item.hovaten}</td>
