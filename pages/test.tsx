@@ -17,7 +17,7 @@ const lichsu = () => {
     ngay: Date;
     hovaten: string;
     name_bacsi: any;
-    chuandoan: string;
+    chandoan: string;
     donthuoc: string;
     ketquaCLS: string;
   }
@@ -131,6 +131,7 @@ const lichsu = () => {
                 <>
                   <tr key={item.id}>
                     <td className="border border-slate-300">
+                      {item.ngay}
                       {/* {handleFormatDateTime(item.ngay)} */}
                     </td>
                     <td className="border border-slate-300">{item.hovaten}</td>
@@ -138,7 +139,7 @@ const lichsu = () => {
                       {item.name_bacsi}
                     </td>
                     <td className="border border-slate-300">
-                      {item.chuandoan}
+                      {item.chandoan}
                     </td>
                     <td className="border border-slate-300">{item.donthuoc}</td>
                     <td className="border border-slate-300">
